@@ -1,0 +1,17 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=900
+
+- name: Install service
+  apt: pkg=memcached state=present
+
+- name: Update config
+  template: src=ubuntu_memcached.j2 dest=/etc/default/memcached owner=root group=root mode=0644
+  notify: restart memcached
+
+- name: Update config
+  template: src=ubuntu_memcached.conf.j2 dest=/etc/memcached.conf owner=root group=root mode=0644
+  notify: restart memcached
+
+- name: Start and enable service
+  service: name=memcached state={{ 'started' if memcached_start else 'stopped' }} enabled={{ 'yes' if memcached_start_on_boot else 'no' }}

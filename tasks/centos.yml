@@ -1,0 +1,10 @@
+---
+- name: Install service
+  yum: name=memcached enablerepo=epel state=present
+
+- name: Update config
+  template: src=centos_memcached.j2 dest=/etc/sysconfig/memcached owner=root group=root mode=0644
+  notify: restart memcached
+
+- name: Start and enable service
+  service: name=memcached state={{ 'started' if memcached_start else 'stopped' }} enabled={{ 'yes' if memcached_start_on_boot else 'no' }}
