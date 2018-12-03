@@ -1,5 +1,10 @@
-PORT="{{ memcached_port }}"
 USER="memcached"
 MAXCONN="{{ memcached_connections }}"
 CACHESIZE="{{ memcached_memory }}"
-OPTIONS="-l {{ memcached_address }}"
+{% if memcached_socket: %}
+OPTIONS="-s {{ memcached_socket_path }} -a {{ memcached_socket_mod }} -t {{ memcached_threads }}"
+{% else %}
+PORT="{{ memcached_port }}"
+OPTIONS="-l {{ memcached_address }} -t {{ memcached_threads }}"
+{% endif %}
+

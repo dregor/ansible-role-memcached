@@ -1,7 +1,10 @@
 ---
 memcached_start: true
 memcached_start_on_boot: true
-
+memcached_socket: true
+memcached_socket_path: /tmp/memcached.socket 
+memcached_socket_mod: 0666
+memcached_threads: 4
 memcached_address: 127.0.0.1
 memcached_port: 11211
 memcached_memory: 64
